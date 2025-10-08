@@ -26,19 +26,21 @@
 
 ## Preprocessing
 - Purpose: clean and standardize raw PCG signals so later steps (segmentation, features) work reliably.  
-- Common tasks:
-  - Filtering: bandpass filters to remove out-of-band noise (e.g., 20–400 Hz typical for heart sounds).  
-  - Denoising: wavelet denoising or spectral subtraction for background noise reduction.  
-  - Normalization / amplitude scaling: make signal amplitudes comparable across recordings.  
-  - Resampling: unify sampling rates across datasets (e.g., 2 kHz or 4 kHz) to use the same feature parameters.  
-  - Artifact removal: detect and remove movement, stethoscope clicks, or very noisy segments.  
-  - Baseline wander removal: high-pass filtering to remove slow drifts.
+
+- Resample: Resampling reduces computational load and standardizes sampling rates across merged datasets, commonly targeting 1000–2000 Hz which satisfies the Nyquist requirement for heart-sound bandwidth (~800 Hz). Using a common sampling rate simplifies feature extraction, model design, and fair comparisons across datasets.
+
+- Denoise: Denoising removes environmental and physiological noise that obscures heart-sound components, typically via bandpass filters, wavelet thresholding, or Wiener spectral subtraction. Effective denoising raises signal-to-noise ratio and improves the reliability of segmentation and classification downstream.
+
 - Why it matters: poor preprocessing changes feature values and can degrade segmentation and classifier performance.
 
 ## Segmentation
-- Window length: include at least one complete cardiac period (S1–S2 cycle).  
-- Overlap: use a large overlap rate to avoid missing transients and boundaries.  
-- Effect: improves robustness and reduces sensitivity to window placement.
+- One heart‑sound period contains four states: S1, systole, S2, and diastole; S1 and S2 are most important for extracting pathological features.
+- Accurate localization of S1 and S2 is critical because many diagnostic features are concentrated there.
+- ECG can serve as a timing reference: P‑peaks align with the start of S1 and S2 timing relates to T‑peaks, aiding segmentation.
+- Segmentation quality directly affects downstream detection/classification — precise segmentation enables better feature extraction and higher classification accuracy.
+- Traditional (pre‑DNN) exact segmentation methods are feature‑based and include: wavelet transform (WT), fractal decomposition, Hilbert envelope algorithms, and Shannon energy envelope.
+- With modern deep learning, equal‑length (fixed window) segmentation often yields strong classification performance, reducing reliance on exact feature‑based segmentation.
+- Despite DNN advances, exact segmentation of the four states remains valuable for interpretability and clinical analysis.
 
 ## Feature extraction
 - TIME & FFT (single-variable): good with traditional classifiers and deep models.  
