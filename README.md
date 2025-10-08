@@ -88,12 +88,12 @@ Below are the datasets used in the paper’s experiments and the dataset table s
 
 | Dataset (Used in Paper) | # of files | # of Classes | SF (Hz) | Balance | Time (s) | Collection Method / Device | States (labels reported) |
 |---|---:|---:|---:|---:|---:|---|---|
-| WHSM (No) | 16 | Multiple | NR | NR | 9 | Stethoscope | S1 \ Sys \ S2 \ Dia \ S3 \ S4 |
-| MHSML (No) | 23 | Multiple | 44100 | N | 7–9 | Not Reported (NR) | S1 \ Sys \ S2 \ Dia |
+| WHSM (No) | 16 | Multiple | NR | NR | 9 | Stethoscope | S1 \\ Sys \\ S2 \\ Dia \\ S3 \\ S4 |
+| MHSML (No) | 23 | Multiple | 44100 | N | 7–9 | Not Reported (NR) | S1 \\ Sys \\ S2 \\ Dia |
 | CAHM (No) | 64 | Multiple | NR | NR | NR | NR | NR |
-| PHSCCD (A,B) (Yes) | 176 (A) / 656 (B) | 4 (A) / 3 (B) | Below 195 | N | 1–30 | iStethoscope Pro (iPhone app) | S1 \ Sys \ S2 \ Dia |
-| PHSD (Yes) | 528 | Multiple | 44100 | N | 3–249 | Digital stethoscope (ThinklabsOne) | S1 \ Sys \ S2 \ Dia \ S3 \ S4 |
-| PCCD (PhysioNet/CinC) (Yes) | 3240 | 2 | 2000 (resampled) | N | 5–120 | Multiple-database fusion; electronic devices | S1 \ Sys \ S2 \ Dia |
+| PHSCCD (A,B) (Yes) | 176 (A) / 656 (B) | 4 (A) / 3 (B) | Below 195 | N | 1–30 | iStethoscope Pro (iPhone app) | S1 \\ Sys \\ S2 \\ Dia |
+| PHSD (Yes) | 528 | Multiple | 44100 | N | 3–249 | Digital stethoscope (ThinklabsOne) | S1 \\ Sys \\ S2 \\ Dia \\ S3 \\ S4 |
+| PCCD (PhysioNet/CinC) (Yes) | 3240 | 2 | 2000 (resampled) | N | 5–120 | Multiple-database fusion; electronic devices | S1 \\ Sys \\ S2 \\ Dia |
 
 Notes and key dataset details used in experiments:
 - PCCD (PhysioNet/CinC Challenge Dataset): largest dataset used in experiments — 3,240 recordings collected from multiple research groups; recordings resampled from 44.1 kHz to 2,000 Hz for experiments; distribution: 2,575 normal, 665 abnormal (realistic imbalance). PCG durations 5–120 s.
@@ -123,7 +123,10 @@ Let TP = true positives, TN = true negatives, FP = false positives, FN = false n
 Note from paper: the heart-sound datasets are generally imbalanced, so Accuracy is not a suitable sole metric — the paper emphasizes F1-score as a critical evaluation metric for comparing methods on imbalanced datasets.
 
 ## Experiments and results
-- Setup: same-level comparisons across public heart-sound datasets.  
+- Setup: same-level comparisons across public heart-sound datasets (PCCD, PHSD, PHSCCD).  
+- Datasets: PCCD (PhysioNet/CinC) n=3,240 recordings (resampled to 2000 Hz; 2,575 normal / 665 abnormal), PHSD n=528 (pediatric, 44.1 kHz), PHSCCD A/B n=176/656.  
+- Main metric: F1-score emphasized due to class imbalance; accuracy reported but de-emphasized.  
+- Protocol note: windows containing ≥1 heart cycle with high overlap (commonly 50–75%), resampling/denoising applied before segmentation and feature extraction.  
 - Key findings: segmentation with one period + high overlap; STFT/CWT/ST robust; TIME/FFT strong for many setups; MFCC shines with DNNs.  
 - Best combos observed: TIME + DNN or MFCC + DNN.
 
