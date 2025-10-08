@@ -12,7 +12,6 @@
 - [Experiments and results](#experiments-and-results)  
 - [Discussion and insights](#discussion-and-insights)  
 - [Conclusion and recommendations](#conclusion-and-recommendations)  
-- [Nine salient heart-sound features (short definitions)](#nine-salient-heart-sound-features-short-definitions)
 
 ## Introduction
 - Problem: automatic heart-sound detection helps early CVD diagnosis.  
@@ -43,14 +42,46 @@
 - Despite DNN advances, exact segmentation of the four states remains valuable for interpretability and clinical analysis.
 
 ## Feature extraction
-- TIME & FFT (single-variable): good with traditional classifiers and deep models.  
-- STFT, CWT, S-transform (2D time–frequency): robust across classifier types.  
-- MFCC / Mel-spectrum: works best when paired with deep neural networks.
+- The paper groups features by dimensionality and typical use:
+
+  - Single Independent Variable (SIV) features — simple, single‑channel descriptors:
+    - TIME: time‑domain descriptors (e.g., amplitude, energy, RMS, zero‑crossing) that capture temporal signal characteristics.
+    - DFT (Discrete Fourier Transform): global frequency content measures computed from the Fourier transform (e.g., dominant frequency, band energy).
+    - PSD (Power Spectral Density): estimate of power distribution over frequency useful for characterizing spectral energy and noise levels.
+
+  - Double Independent Variable (DIV) features — time–frequency or multi‑scale representations:
+    - STFT (Short‑Time Fourier Transform): spectrograms capturing localized frequency content over time.
+    - Mel / MFCC: mel‑scaled spectrograms and Mel‑Frequency Cepstral Coefficients widely used with DNNs for compact spectral representations.
+    - WT (Continuous Wavelet Transform): scalograms providing multi‑scale time–frequency localization for transient events.
+    - ST (S‑Transform): hybrid time–frequency transform with frequency‑dependent resolution.
+    - WPD (Wavelet Packet Decomposition): wavelet‑packet based decomposition offering richer sub‑band representations than standard WT.
+
+  - Multifeature and others:
+    - Multifeature approaches combine multiple feature families (e.g., TIME + MFCC + WT statistics) to capture complementary signal aspects; they are commonly used to improve robustness across recording conditions.
+    - "Others" include morphological/interval features (durations, inter‑beat intervals), higher‑order statistics and information‑theoretic measures (entropy, kurtosis), and non‑signal metadata (age, recording location) when available.
+    - Fusion strategies: feature‑level concatenation, dimensionality reduction / selection (PCA, mutual information), and decision‑level fusion (ensemble voting) are standard ways to combine features.
+    - Guidance: use SIV for lightweight, interpretable setups; use DIV or multifeature representations for deep models or when capturing transient/time‑varying phenomena is important.
+
+- Guidance: choose SIV for simple, low‑cost descriptors or when models expect vector inputs; use DIV representations or multifeature fusion when temporal evolution of spectral content matters or when feeding 2D inputs to convolutional models.
 
 ## Classification
-- Traditional classifiers (SVM, RF, etc.): effective with strong handcrafted features.  
-- Deep neural networks: exploit richer features (especially MFCC, TIME) for best results.  
-- Recommendation: match feature type to classifier capability.
+- The paper lists the specific Traditional Machine Learning (TML) and Deep Neural Network (DNN) classifiers used or evaluated:
+
+  - Traditional Machine Learning (TML) classifiers mentioned in the paper:
+    - Decision Trees (DT) and Random Forests (RF)
+    - k-Nearest Neighbors (KNN)
+    - Support Vector Machine (SVM)
+    - Gaussian Mixture Model (GMM)
+    - DHMM (duration / discrete Hidden Markov Model variant listed as DHMM)
+    - ANN (classical artificial neural networks / multilayer perceptrons used as non‑deep baselines)
+
+  - Deep Neural Network (DNN) classifiers mentioned in the paper:
+    - Convolutional Neural Networks (CNN)
+    - Recurrent Neural Networks (RNN) — includes sequence models used for temporal patterns (e.g., LSTM/GRU variants when applied)
+
+- Notes:
+  - The paper groups many cited works under the broad DNN category (primarily CNN/RNN architectures); exact architecture names (e.g., specific ResNet variants) are used in some cited studies, but the table in the paper summarizes them as CNN/RNN.
+  - Recommendation: match feature type to classifier complexity — SIV + TML (SVM, RF) for lightweight, interpretable systems; DIV or image-like features (spectrograms, scalograms) + CNN/RNN for high-performance deep models.
 
 ## Datasets
 Below are the datasets used in the paper’s experiments and the dataset table summary (Table III in the paper). The experiments specifically use three datasets: PhysioNet/CinC Challenge Dataset (PCCD), Pediatric Heart Sound Dataset (PHSD), and PASCAL Heart Sound Classification Challenge Dataset (PHSCCD). The table reproduced here summarizes the public datasets listed in the paper.
@@ -105,31 +136,3 @@ Note from paper: the heart-sound datasets are generally imbalanced, so Accuracy 
 - Clear rules: use windows containing ≥1 heart cycle, high overlap; pair features and models intentionally.  
 - Best-practice combos: TIME or MFCC with DNNs gave top performance in experiments.  
 - Future work: standard benchmarks, explore hybrid features and richer deep models.
-
-## Nine salient heart-sound features (short definitions)
-1. Time-domain features (TIME)  
-   - Simple measures computed directly from the signal waveform (e.g., peak amplitude, signal energy, root-mean-square, zero-crossing rate). Good for capturing overall loudness and temporal patterns.
-
-2. FFT-based spectral features (FFT)  
-   - Frequency-domain descriptors derived from the (global) Fourier transform such as dominant frequency, spectral energy in bands, and spectral peaks; useful for identifying frequency content of heart sounds.
-
-3. Short-Time Fourier Transform (STFT) / Spectrogram  
-   - A time–frequency representation that computes FFTs over short, overlapping windows to produce a spectrogram; captures how spectral content evolves over time.
-
-4. Continuous Wavelet Transform (CWT) / Scalogram  
-   - A multi-scale time–frequency analysis using wavelets; provides good localization of transient events at different scales and is effective for nonstationary heart sounds.
-
-5. S-Transform (ST)  
-   - A hybrid time–frequency transform combining aspects of STFT and wavelets; produces a time–frequency map with frequency-dependent resolution useful for transient detection.
-
-6. Mel-spectrum and Mel-Frequency Cepstral Coefficients (MFCC)  
-   - Perceptually motivated spectral features: mel-spectrum maps frequency to the Mel scale; MFCCs are compact cepstral coefficients extracted from the mel-spectrum, often effective with neural networks.
-
-7. Wavelet coefficient statistics / Wavelet-packet features  
-   - Features derived from (discrete) wavelet decomposition—e.g., statistics (mean, variance, entropy) of coefficients across bands—capturing multi-resolution signal properties.
-
-8. Spectral-shape measures (centroid, bandwidth, roll-off, flux)  
-   - Aggregate spectral descriptors that summarize spectral “shape” and movement: spectral centroid (center of mass), bandwidth (spread), roll-off (cutoff frequency), and flux (frame-to-frame change).
-
-9. Statistical / information-theoretic features (entropy, skewness, kurtosis, SNR)  
-   - Higher-order descriptive features capturing signal complexity and distribution (e.g., Shannon entropy, skewness, kurtosis) and noise/quality metrics like signal-to-noise ratio; useful for characterizing abnormal vs. normal sounds.
