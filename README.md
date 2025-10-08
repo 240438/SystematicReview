@@ -7,6 +7,8 @@
 - [Segmentation](#segmentation)  
 - [Feature extraction](#feature-extraction)  
 - [Classification](#classification)  
+- [Datasets](#datasets)  
+- [Evaluation metrics](#evaluation-metrics)  
 - [Experiments and results](#experiments-and-results)  
 - [Discussion and insights](#discussion-and-insights)  
 - [Conclusion and recommendations](#conclusion-and-recommendations)  
@@ -47,6 +49,45 @@
 - Traditional classifiers (SVM, RF, etc.): effective with strong handcrafted features.  
 - Deep neural networks: exploit richer features (especially MFCC, TIME) for best results.  
 - Recommendation: match feature type to classifier capability.
+
+## Datasets
+Below are the datasets used in the paper’s experiments and the dataset table summary (Table III in the paper). The experiments specifically use three datasets: PhysioNet/CinC Challenge Dataset (PCCD), Pediatric Heart Sound Dataset (PHSD), and PASCAL Heart Sound Classification Challenge Dataset (PHSCCD). The table reproduced here summarizes the public datasets listed in the paper.
+
+| Dataset (Used in Paper) | # of files | # of Classes | SF (Hz) | Balance | Time (s) | Collection Method / Device | States (labels reported) |
+|---|---:|---:|---:|---:|---:|---|---|
+| WHSM (No) | 16 | Multiple | NR | NR | 9 | Stethoscope | S1 \ Sys \ S2 \ Dia \ S3 \ S4 |
+| MHSML (No) | 23 | Multiple | 44100 | N | 7–9 | Not Reported (NR) | S1 \ Sys \ S2 \ Dia |
+| CAHM (No) | 64 | Multiple | NR | NR | NR | NR | NR |
+| PHSCCD (A,B) (Yes) | 176 (A) / 656 (B) | 4 (A) / 3 (B) | Below 195 | N | 1–30 | iStethoscope Pro (iPhone app) | S1 \ Sys \ S2 \ Dia |
+| PHSD (Yes) | 528 | Multiple | 44100 | N | 3–249 | Digital stethoscope (ThinklabsOne) | S1 \ Sys \ S2 \ Dia \ S3 \ S4 |
+| PCCD (PhysioNet/CinC) (Yes) | 3240 | 2 | 2000 (resampled) | N | 5–120 | Multiple-database fusion; electronic devices | S1 \ Sys \ S2 \ Dia |
+
+Notes and key dataset details used in experiments:
+- PCCD (PhysioNet/CinC Challenge Dataset): largest dataset used in experiments — 3,240 recordings collected from multiple research groups; recordings resampled from 44.1 kHz to 2,000 Hz for experiments; distribution: 2,575 normal, 665 abnormal (realistic imbalance). PCG durations 5–120 s.
+- PHSD (Pediatric Heart Sound Dataset): pediatric recordings — 528 files (≈4 hours total), durations 3–249 s, recorded from children aged 1 month–12 years using ThinklabsOne at 44.1 kHz / 16-bit; multi-class labels (normal, ASD, VSD, TOF, other).
+- PHSCCD (PASCAL Heart Sound Classification Challenge Dataset): two subdatabases (A and B). Database A: 176 files (quadruple classification). Database B: 656 files (triple classification). File lengths 1–30 s. The authors also used a small two-class subset (normal vs murmur) for some experiments.
+
+## Evaluation metrics
+The paper defines and uses the following core evaluation metrics for binary heart-sound detection (normal vs abnormal). The formulas below are presented exactly as in the paper.
+
+Let TP = true positives, TN = true negatives, FP = false positives, FN = false negatives. In this article, TP denotes correctly detected abnormal heart sounds.
+
+- Accuracy (Acc)  
+  Acc = (TP + TN) / (TP + TN + FP + FN)
+
+- Specificity (Spe)  
+  Spe = TN / (TN + FP)
+
+- Sensitivity / Recall (Sen)  
+  Sen = TP / (TP + FN)
+
+- Precision (Pre)  
+  Pre = TP / (TP + FP)
+
+- F1-score (F1)  
+  F1 = 2 × Pre × Sen / (Pre + Sen)
+
+Note from paper: the heart-sound datasets are generally imbalanced, so Accuracy is not a suitable sole metric — the paper emphasizes F1-score as a critical evaluation metric for comparing methods on imbalanced datasets.
 
 ## Experiments and results
 - Setup: same-level comparisons across public heart-sound datasets.  
