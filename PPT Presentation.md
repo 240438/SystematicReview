@@ -1,33 +1,24 @@
-Prepare a 30-minute PowerPoint Presentation
+# Prepare a 30-minute PowerPoint Presentation
 
 Your presentation should include the following sections:
 
-Project Introduction
-
+## Project Introduction
 Provide a brief overview of the problem, objectives, and scope.
 
-Datasets (6–8 Benchmark Datasets)
-
+## Datasets (6–8 Benchmark Datasets)
 Briefly describe each dataset used in the study, including its source and relevance.
 
-System Design
-
+## System Design
 Explain each component of the workflow:
 
-Input Data
-
-Data Preprocessing
-
-Feature Extraction
-
-Feature Selection
-
-Model Development
+- Input Data  
+- Data Preprocessing  
+- Feature Extraction  
+- Feature Selection  
+- Model Development  
 
 Provide a list of algorithms that will be applied in the model development stage.
 
-Results and Evaluation Metrics
-
-Present the outcomes of your models.
-
+## Results and Evaluation Metrics
+Present the outcomes of your models.  
 Discuss evaluation metrics used to assess performance (e.g., RMSE, MAE, R², Accuracy, F1-score).
