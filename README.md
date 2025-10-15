@@ -28,7 +28,13 @@
 
 - Resample: Resampling reduces computational load and standardizes sampling rates across merged datasets, commonly targeting 1000–2000 Hz which satisfies the Nyquist requirement for heart-sound bandwidth (~800 Hz). Using a common sampling rate simplifies feature extraction, model design, and fair comparisons across datasets.
 
-- Denoise: Denoising removes environmental and physiological noise that obscures heart-sound components, typically via bandpass filters, wavelet thresholding, or Wiener spectral subtraction. Effective denoising raises signal-to-noise ratio and improves the reliability of segmentation and classification downstream.
+- Denoise: Heart sound recordings often include noise from the environment, body, or equipment. To improve detection accuracy, preprocessing involves applying denoising techniques that remove unwanted high- and low-frequency components while preserving key heart sound features.
+
+  **Common filtering and denoising methods include:**
+  - Butterworth Bandpass Filter  
+  - Chebyshev Filter  
+  - Wavelet Threshold Denoising  
+  - Wiener Spectral Subtraction
 
 - Why it matters: poor preprocessing changes feature values and can degrade segmentation and classifier performance.
 
