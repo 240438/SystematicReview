@@ -39,13 +39,16 @@
 - Why it matters: poor preprocessing changes feature values and can degrade segmentation and classifier performance.
 
 ## Segmentation
-- One heart‑sound period contains four states: S1, systole, S2, and diastole; S1 and S2 are most important for extracting pathological features.
-- Accurate localization of S1 and S2 is critical because many diagnostic features are concentrated there.
-- ECG can serve as a timing reference: P‑peaks align with the start of S1 and S2 timing relates to T‑peaks, aiding segmentation.
-- Segmentation quality directly affects downstream detection/classification — precise segmentation enables better feature extraction and higher classification accuracy.
-- Traditional (pre‑DNN) exact segmentation methods are feature‑based and include: wavelet transform (WT), fractal decomposition, Hilbert envelope algorithms, and Shannon energy envelope.
-- With modern deep learning, equal‑length (fixed window) segmentation often yields strong classification performance, reducing reliance on exact feature‑based segmentation.
-- Despite DNN advances, exact segmentation of the four states remains valuable for interpretability and clinical analysis.
+- A single heart sound cycle consists of four states: **S1**, **Systole**, **S2**, and **Diastole**.
+- Accurate segmentation of **S1** and **S2** is essential for detecting pathological features and improving classification accuracy.
+- While traditional feature-based methods were once used.
+  - Wavelet Transform (WT)
+  - Fractal Decomposition
+  -  Hilbert Envelope Algorithm
+  -  Shannon Energy Envelope
+- **Modern Deep Learning Approaches:**  
+  - Use equal-length segmentation instead of exact boundary detection.  
+  - Achieve high classification accuracy through powerful feature learning.
 
 ## Feature extraction
 - The paper groups features by dimensionality and typical use:
