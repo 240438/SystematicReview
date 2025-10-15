@@ -20,7 +20,7 @@
 
 ## Methods
 - Broad scope: describes datasets, evaluation protocol, and the overall experimental design.  
-- Central idea: the authors structure the method around a processing pipeline (preprocessing → segmentation → feature extraction → classification).  
+- Central idea: the authors structure the method around the pipeline (preprocessing → segmentation → feature extraction → classification).  
 - Comparison approach: evaluate techniques on common datasets with the same comparison level.
 
 ## Preprocessing
